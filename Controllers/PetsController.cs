@@ -76,5 +76,20 @@ public class PetsController : ControllerBase
     }
   }
 
+  [HttpDelete("{petId}")]
+  [Authorize]
+  public async Task<ActionResult<string>> deletePet(int petId)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      string message = _petsService.deletePet(petId, userInfo);
+      return Ok(message);
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 
 }

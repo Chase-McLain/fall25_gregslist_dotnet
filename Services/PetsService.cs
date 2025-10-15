@@ -21,6 +21,18 @@ public class PetsService
     return pet;
   }
 
+  internal string deletePet(int petId, Account userInfo)
+  {
+    Pet pet = getPetById(petId);
+    if (pet.CreatorId != userInfo.Id)
+    {
+      throw new Exception("I know what you are");
+    }
+    _petsRepository.deletePet(petId);
+
+    return "pet has perished";
+  }
+
   internal Pet getPetById(int petId)
   {
     Pet pet = _petsRepository.getPetById(petId);

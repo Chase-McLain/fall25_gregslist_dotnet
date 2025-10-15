@@ -45,6 +45,20 @@ public class PetsRepository
     return pet;
   }
 
+  internal void deletePet(int petId)
+  {
+    string sql = @"DELETE FROM pets WHERE id = @PetId LIMIT 1;";
+
+    object paramOBJ = new { PetId = petId };
+
+    int rows = _db.Execute(sql, paramOBJ);
+
+    if (rows != 1)
+    {
+      throw new Exception("machine broke");
+    }
+  }
+
   internal Pet getPetById(int petId)
   {
     string sql = @"SELECT pets.*, accounts.* FROM pets INNER JOIN accounts ON pets.creator_Id = accounts.id WHERE pets.id = @PetID;";

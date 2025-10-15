@@ -11,4 +11,28 @@ public class PetsController : ControllerBase
   {
     _petsService = petsService;
   }
+
+
+  [HttpGet]
+  public ActionResult<List<Pet>> getPets()
+  {
+    try
+    {
+      List<Pet> pets = _petsService.getPets();
+      return pets;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
+
+
+
+
+
+
+
+
+
 }

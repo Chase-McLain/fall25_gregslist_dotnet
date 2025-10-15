@@ -27,8 +27,19 @@ public class PetsController : ControllerBase
     }
   }
 
-
-
+  [HttpGet("{petId}")]
+  public ActionResult<Pet> getPetById(int petId)
+  {
+    try
+    {
+      Pet pet = _petsService.getPetById(petId);
+      return pet;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 
 
 

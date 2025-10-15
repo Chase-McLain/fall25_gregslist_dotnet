@@ -16,20 +16,20 @@ public class PetsRepository
 
   internal Pet getPetById(int petId)
   {
-    string sql = "SELECT * FROM pets WHERE id = @PetID;";
+    string sql = @"SELECT pets.*, accounts.* FROM pets INNER JOIN accounts ON pets.creator_Id = accounts.id WHERE pets.id = @PetID;";
 
     object paramOBJ = new { PetID = petId };
 
-    Pet pet = _db.Query<Pet>(sql, paramOBJ).SingleOrDefault();
+    Pet pet = _db.Query(sql, (Pet pet, Profile account) => { pet.Creator = account; return pet; }, paramOBJ).SingleOrDefault();
 
     return pet;
   }
 
   internal List<Pet> getPets()
   {
-    string sql = "SELECT * FROM pets;";
+    string sql = "SELECT pets.*, accounts.* FROM pets INNER JOIN accounts ON pets.creator_Id = accounts.id;";
 
-    List<Pet> pets = _db.Query<Pet>(sql).ToList();
+    List<Pet> pets = _db.Query(sql, (Pet pet, Profile account) => { pet.Creator = account; return pet; }).ToList();
 
     return pets;
   }

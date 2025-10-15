@@ -6,10 +6,12 @@ namespace gregslist_api_dotnet.Controllers;
 public class PetsController : ControllerBase
 {
   private readonly PetsService _petsService;
+  private readonly Auth0Provider _auth;
 
-  public PetsController(PetsService petsService)
+  public PetsController(PetsService petsService, Auth0Provider auth)
   {
     _petsService = petsService;
+    _auth = auth;
   }
 
 
@@ -41,7 +43,22 @@ public class PetsController : ControllerBase
     }
   }
 
-
+  [HttpPost]
+  [Authorize]
+  public async Task<ActionResult<Pet>> createPet([FromBody] Pet petData)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      petData.CreatorId = userInfo.Id;
+      Pet pet = _petsService.createPet(petData);
+      return pet;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 
 
 

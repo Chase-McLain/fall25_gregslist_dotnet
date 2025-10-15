@@ -1,5 +1,6 @@
 
 
+
 namespace gregslist_api_dotnet.Services;
 
 
@@ -11,6 +12,12 @@ public class PetsService
   public PetsService(PetsRepository petsRepository)
   {
     _petsRepository = petsRepository;
+  }
+
+  internal Pet createPet(Pet petData)
+  {
+    Pet pet = _petsRepository.createPet(petData);
+    return pet;
   }
 
   internal Pet getPetById(int petId)

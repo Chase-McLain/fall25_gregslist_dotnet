@@ -58,7 +58,7 @@ INSERT INTO
         creator_id
     )
 VALUES (
-        'Schmoble Flops',
+        'Schmoble Flops the sequal',
         6,
         'Rabbit',
         'white n brown',

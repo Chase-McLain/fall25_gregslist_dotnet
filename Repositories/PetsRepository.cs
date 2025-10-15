@@ -1,5 +1,6 @@
 
 
+
 namespace gregslist_api_dotnet.Repositories;
 
 
@@ -12,6 +13,35 @@ public class PetsRepository
   public PetsRepository(IDbConnection db)
   {
     _db = db;
+  }
+
+  internal Pet createPet(Pet petData)
+  {
+    string sql = @"
+    INSERT INTO
+      pets (
+        name,
+        age,
+        type,
+        color,
+        price,
+        is_rat,
+        creator_id
+          )
+      VALUES (
+        @Name,
+        @Age,
+        @Type,
+        @Color,
+        @Price,
+        @IsRAT,
+        @CreatorId
+    );
+        SELECT pets.*, accounts.* FROM pets INNER JOIN accounts ON pets.creator_Id = accounts.id WHERE pets.id = LAST_INSERT_ID();";
+
+    Pet pet = _db.Query(sql, (Pet pet, Profile account) => { pet.Creator = account; return pet; }, petData).SingleOrDefault();
+
+    return pet;
   }
 
   internal Pet getPetById(int petId)

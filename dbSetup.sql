@@ -47,6 +47,26 @@ CREATE TABLE pets (
     Foreign Key (creator_id) REFERENCES accounts (id) ON DELETE CASCADE
 )
 
+INSERT INTO
+    pets (
+        name,
+        age,
+        type,
+        color,
+        price,
+        is_rat,
+        creator_id
+    )
+VALUES (
+        'Schmoble Flops',
+        6,
+        'Rabbit',
+        'white n brown',
+        200000,
+        FALSE,
+        '68d30dd464070b5c78d5e8f5'
+    )
+
 DROP TABLE cars;
 
 INSERT INTO
@@ -105,3 +125,7 @@ FROM cars
     JOIN accounts ON accounts.id = cars.creator_id
 WHERE
     cars.id = 1;
+
+SELECT * FROM accounts;
+
+SELECT * FROM pets;

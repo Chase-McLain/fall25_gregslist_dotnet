@@ -1,6 +1,7 @@
 
 
 
+
 namespace gregslist_api_dotnet.Repositories;
 
 
@@ -62,5 +63,26 @@ public class PetsRepository
     List<Pet> pets = _db.Query(sql, (Pet pet, Profile account) => { pet.Creator = account; return pet; }).ToList();
 
     return pets;
+  }
+
+  internal void updatePet(Pet pet)
+  {
+    string sql = @"
+    UPDATE pets
+    SET
+    name = @Name,
+    age = @Age,
+    type = @Type,
+    color = @Color,
+    price = @Price,
+    is_rat = @IsRat
+    WHERE id = @Id LIMIT 1;";
+
+    int rows = _db.Execute(sql, pet);
+
+    if (rows != 1)
+    {
+      throw new Exception("machine broke");
+    }
   }
 }

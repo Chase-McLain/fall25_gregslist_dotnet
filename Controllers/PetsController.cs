@@ -60,7 +60,21 @@ public class PetsController : ControllerBase
     }
   }
 
-
+  [HttpPut("{petId}")]
+  [Authorize]
+  public async Task<ActionResult<Pet>> updatePet(int petId, [FromBody] Pet petData)
+  {
+    try
+    {
+      Account userInfo = await _auth.GetUserInfoAsync<Account>(HttpContext);
+      Pet pet = _petsService.updatePet(petId, userInfo, petData);
+      return pet;
+    }
+    catch (Exception exception)
+    {
+      return BadRequest(exception.Message);
+    }
+  }
 
 
 }
